@@ -1,0 +1,24 @@
+$(document).ready(function() {
+    $("#nav1").addClass("active");
+});
+
+
+function pageNoClick(pageNo,totalpage){
+	
+	var starttime = $("#starttime").val();
+	var endtime = $("#endtime").val();
+	
+	if(pageNo<=0){
+		pageNo=1
+	}
+	
+	if(pageNo>=totalpage){
+		pageNo=totalpage
+	}
+	var pagesize= 10;
+	window.location.href = "Request_List.php?pageno="+pageNo+"&pagesize="+pagesize+"&starttime="+starttime+"&endtime="+endtime;
+		
+}
+
+
+

@@ -1,0 +1,133 @@
+$(document).ready(function() {
+
+	$("#nav1").addClass("active");
+	var url = "Request_List_Chart_Dao.php";
+	$.ajax({
+		type : 'POST',
+		url : url,
+		dataType : "json",
+                data: {"starttime":"2014-10-10","endtime":"2014-12-12"},
+		success : function(data) {
+			drawChart(data);	
+		}
+	});
+	
+	$("#searchbtn").click(function(){
+	   var startTime = $("#starttime").val();
+	   var endTime = $("#endtime").val();
+	   var url = "Request_List_Chart_Dao.php";
+		
+		$.ajax({
+			type : 'POST',
+			url : url,
+			dataType : "json",
+                        data: {"starttime":startTime,"endtime":endTime},
+			success : function(data) {
+				if(data.length==0){
+					$('#container').html("<div>no data available</div>");
+				}else{
+					drawChart(data);
+				}
+				
+			}
+		});
+	});
+	
+});
+
+
+function drawChart(data){
+	if(data!=null && data.length>0){
+		
+		var rateResult = new Array();
+		var startTime = Date.parse($("#starttime").val());
+		var endTime = Date.parse($("#endtime").val());
+		
+		var temp = new Array();
+		var k =0;
+		for(var j = startTime; j<=endTime; j=j+3600*24*1000){
+			var smallArray = new Array();
+			smallArray[0] = j;
+			smallArray[1] = 0;
+			temp[k] = smallArray;
+			k++;
+		}
+		
+		for(var i=0;i<data.length;i++){
+			for(var p=0;p<temp.length;p++){
+				if(temp[p][0]==Date.parse(data[i][0])){
+					temp[p][1] = parseInt(data[i][1]); 
+				}
+			}
+//			smallArray[1] = ;
+//			rateResult[i] = smallArray;
+		}
+		
+//		for(var i=0;i<data.length;i++){
+//		    var rate = data[i].rate;
+//		    rateResult[rate-1] = rateResult[rate-1]+1;
+//		}
+		
+		console.log(temp);
+		
+
+	    $('#container').highcharts({
+	        chart: {
+	            type: 'spline'
+	        },
+	        title: {
+	            text: 'Request Number'
+	        },
+//	        subtitle: {
+//	            text: 'Irregular time data in Highcharts JS'
+//	        },
+	        xAxis: {
+	            type : 'datetime',
+	            dateTimeLabelFormats: { // don't display the dummy year
+//	                month: '%e. %b',
+//	                year: '%b'
+	            	day: '%e. %b',
+//	            	week: '%e. %b',
+	            	month: '%b \'%y',
+	            	year: '%Y'
+	            },
+	            title: {
+	                text: 'Date'
+	            }
+	        },
+	        yAxis: {
+	            title: {
+	                text: 'Request Number'
+	            },
+	            min: 0
+	        },
+	        tooltip: {
+	            headerFormat: '<b>{series.name}</b><br>',
+	            pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+	        },
+
+	        series: [{
+	            name: 'Request',
+	            // Define the data points. All series have a dummy year
+	            // of 1970/71 in order to be compared on the same x axis. Note
+	            // that in JavaScript, months start at 0 for January, 1 for February etc.
+//	            data: [
+//	                [Date.parse("2014-11-01"), 10 ],
+//	                [Date.parse("2014-11-02"), 15],
+//	            ]
+	            data:temp
+	        }]
+	    });
+	
+	}
+	
+	$(function () {});
+	
+	
+}
+
+
+
+
+
+

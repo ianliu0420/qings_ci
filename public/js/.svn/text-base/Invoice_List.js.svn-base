@@ -1,0 +1,51 @@
+$(document).ready(function() {
+    $("#nav2").addClass("active");
+});
+
+
+function pageNoClick(pageNo,totalpage){
+	if(pageNo<=0){
+		pageNo=1
+	}
+	
+	if(pageNo>=totalpage){
+		pageNo=totalpage
+	}
+	var pagesize= 10;
+	var starttime = $("#starttime").val();
+	var endtime = $("#endtime").val();
+	var username = $("#username").val();
+	var invoiceno  = $("#invoiceno").val();
+	var paymentstatus = $('input:radio[name=paymentstatus]:checked').val()
+	var procode = $("#procode").val();
+	
+	window.location.href = "Invoice_List.php?pageno="+pageNo+"&pagesize="+pagesize
+	+"&starttime="+starttime+"&endtime="+endtime
+	+"&username="+username+"&invoiceno="+invoiceno
+	+"&paymentstatus="+paymentstatus+"&procode="+procode;		
+}
+
+
+function quickconfirm(event_id,team_id){
+	$("#confirmworkbutton").attr('disabled','disabled');
+	var r = confirm("Are you confirm the work?");
+	if (r == true) {
+	    $.ajax({
+			type : 'POST',
+			url : "Payment_Status_update.php",
+			dataType : "json",
+			data: {"event_id":event_id,"team_id":team_id},
+			success : function(data) {
+				if(data.errono==0){
+					alert("we have comfirm the work!");
+					location.reload();
+				}else if(data.errono==1){
+					alert("please contact the developer, some problem occured");
+				}
+			}
+		});
+	} else {
+	}
+}
+
+

@@ -1,0 +1,45 @@
+$(document).ready(function() {
+
+	// 处理用户提交的信息
+	$("#submitButton").click(function(){
+		$("#loginForm").submit();
+	});
+	
+	
+	
+	
+	
+});
+
+
+function pageNoClick(pageNo,totalpage){
+	
+//	alert(pageNo +","+totalpage);
+	
+	if(pageNo<=0){
+		pageNo=1
+	}
+	
+	if(pageNo>=totalpage){
+		pageNo=totalpage
+	}
+	
+	
+	var pagesize= 10;
+	
+//	
+//	var searchcontent = $("#searchcontent").val();
+//	var auto_goods_type = $("#auto_goods_type").val();
+//	var pagesize = $("#pagesize").val();
+//
+	
+	window.location.href = "PromotionMng2.php?pageno="+pageNo+"&pagesize="+pagesize;
+//	if(searchcontent!=""){
+//		window.location.href = "PromotionMng2.php?pageno="+pageNo+"&pagesize="+pagesize;
+//	}else{
+//		window.location.href = my_url.base_url+"eshop_courier/get_eshop_courier_bypaper?pageindex="+pageNo+"&pagesize="+pagesize;
+//	}
+}
+
+
+
